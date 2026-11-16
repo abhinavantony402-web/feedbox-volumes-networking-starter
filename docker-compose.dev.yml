@@ -1,0 +1,17 @@
+services:
+  api:
+    # Development overrides: hot-reload via bind mount + nodemon.
+    # Used with: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+    build:
+      context: .
+      target: dev
+    volumes:
+      # Host source visible in the container; node_modules stays
+      # the container's own (npm ci) install, not the host's.
+      - ./server.js:/app/server.js
+      - ./package.json:/app/package.json
+      - api-node-modules:/app/node_modules
+    command: npm run dev
+
+volumes:
+  api-node-modules:
